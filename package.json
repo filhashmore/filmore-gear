@@ -1,0 +1,19 @@
+{
+  "name": "filmore-gear",
+  "version": "1.0.0",
+  "description": "FILMORE Gear Inventory - Tour Production Management System",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'Static site - no build required'"
+  },
+  "keywords": [
+    "tour",
+    "production",
+    "inventory",
+    "gear",
+    "filmore"
+  ],
+  "author": "FiL Hash",
+  "license": "MIT"
+}
