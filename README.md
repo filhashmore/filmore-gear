@@ -43,7 +43,7 @@ A comprehensive web application for touring production managers and backline tec
 
 ## Access
 
-**Access Code:** `PRESTON`
+Access code required. Contact admin for credentials.
 
 ## Usage
 
