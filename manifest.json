@@ -1,0 +1,23 @@
+{
+  "name": "FILMORE Gear Inventory",
+  "short_name": "FILMORE Gear",
+  "description": "Production Management System for touring gear and equipment tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "FILMORE_GearI_App_icon_01.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "f-only-white.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
+}
