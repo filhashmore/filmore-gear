@@ -113,6 +113,49 @@
   <script type="text/babel">
     const { useState, useEffect, useMemo, useCallback } = React;
 
+    // ============ DATA VERSION ============
+    // Increment this when INITIAL_DATA changes to trigger smart merge for all users
+    const DATA_VERSION = '2026-02-01-1';
+
+    // Fields that users can edit (preserved during merge), everything else syncs from source
+    const USER_EDITABLE_FIELDS = {
+      inventory: ['status', 'stock', 'packLocation'],
+      consumables: ['status', 'needed'],
+      acquisitions: ['approval'],
+      flyPack: ['bags'],
+      joelGear: ['status', 'stock', 'packLocation'],
+      reidGear: ['status', 'stock', 'packLocation'],
+      drewGear: ['status', 'stock', 'packLocation'],
+      rentals: ['approval'],
+    };
+
+    // Smart merge: keeps user edits, updates source data (prices, notes, links, etc.)
+    const smartMergeData = (savedData, sourceData) => {
+      const merged = {};
+      for (const category of Object.keys(sourceData)) {
+        const sourceItems = sourceData[category];
+        const savedItems = savedData[category] || [];
+        const userFields = USER_EDITABLE_FIELDS[category] || [];
+
+        merged[category] = sourceItems.map(sourceItem => {
+          const savedItem = savedItems.find(s => s.id === sourceItem.id);
+          if (savedItem) {
+            // Item exists in both - preserve user fields, update everything else
+            const mergedItem = { ...sourceItem };
+            userFields.forEach(field => {
+              if (savedItem[field] !== undefined) {
+                mergedItem[field] = savedItem[field];
+              }
+            });
+            return mergedItem;
+          }
+          // New item from source
+          return sourceItem;
+        });
+      }
+      return merged;
+    };
+
     // ============ INITIAL DATA ============
     const INITIAL_DATA = {
       inventory: [
@@ -805,28 +848,44 @@
       const [selectedItemForDetail, setSelectedItemForDetail] = useState(null);
       const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
-      // Load data from localStorage
+      // Load data from localStorage with version-based smart merge
       useEffect(() => {
         const saved = localStorage.getItem('filmore-gear-data');
+        const savedVersion = localStorage.getItem('filmore-gear-version');
+
         if (saved) {
           try {
             const parsed = JSON.parse(saved);
-            // Merge with initial data to ensure all required arrays exist
-            setData({
-              inventory: parsed.inventory || INITIAL_DATA.inventory,
-              consumables: parsed.consumables || INITIAL_DATA.consumables,
-              acquisitions: parsed.acquisitions || INITIAL_DATA.acquisitions,
-              flyPack: parsed.flyPack || INITIAL_DATA.flyPack,
-              joelGear: parsed.joelGear || INITIAL_DATA.joelGear,
-              reidGear: parsed.reidGear || INITIAL_DATA.reidGear,
-              drewGear: parsed.drewGear || INITIAL_DATA.drewGear,
-              rentals: parsed.rentals || INITIAL_DATA.rentals,
-            });
+
+            if (savedVersion !== DATA_VERSION) {
+              // Version mismatch - smart merge to update source data while preserving user edits
+              console.log(`Data version updated: ${savedVersion || 'none'} → ${DATA_VERSION}`);
+              const mergedData = smartMergeData(parsed, INITIAL_DATA);
+              setData(mergedData);
+              localStorage.setItem('filmore-gear-version', DATA_VERSION);
+            } else {
+              // Version matches - use saved data with fallbacks for any missing arrays
+              setData({
+                inventory: parsed.inventory || INITIAL_DATA.inventory,
+                consumables: parsed.consumables || INITIAL_DATA.consumables,
+                acquisitions: parsed.acquisitions || INITIAL_DATA.acquisitions,
+                flyPack: parsed.flyPack || INITIAL_DATA.flyPack,
+                joelGear: parsed.joelGear || INITIAL_DATA.joelGear,
+                reidGear: parsed.reidGear || INITIAL_DATA.reidGear,
+                drewGear: parsed.drewGear || INITIAL_DATA.drewGear,
+                rentals: parsed.rentals || INITIAL_DATA.rentals,
+              });
+            }
           } catch (e) {
             console.error('Failed to parse saved data, using defaults');
             setData(INITIAL_DATA);
+            localStorage.setItem('filmore-gear-version', DATA_VERSION);
           }
+        } else {
+          // No saved data - set initial version
+          localStorage.setItem('filmore-gear-version', DATA_VERSION);
         }
+
         const savedAuth = localStorage.getItem('filmore-gear-auth');
         if (savedAuth === 'true') setIsAuthenticated(true);
       }, []);
