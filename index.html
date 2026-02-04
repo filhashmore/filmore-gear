@@ -90,6 +90,15 @@
     @supports (padding-top: env(safe-area-inset-top)) {
       .standalone-header { padding-top: env(safe-area-inset-top); }
     }
+    /* Reduced motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body class="bg-dark-900 text-gray-100 font-sans">
