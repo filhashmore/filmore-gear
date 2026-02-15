@@ -1,0 +1,207 @@
+# FILMORE Gear Inventory — Complete Reference
+
+> A touring production management web app for tracking, managing, and updating gear inventory across crew members, with approval workflows and fly pack logistics.
+
+---
+
+## Site Overview
+
+- **URL:** https://filmore-gear.vercel.app
+- **Author:** FiL Hash
+- **Contact:** filhashmore@protonmail.com
+- **GitHub:** https://github.com/filhashmore/filmore-gear
+- **X/Twitter:** https://x.com/FiLHashDev
+- **Location:** Nashville, Tennessee
+- **Type:** Single-page PWA with access code protection
+- **Stack:** React 18 (CDN), Tailwind CSS, Lucide Icons, Babel (in-browser transpilation), localStorage
+- **Hosting:** Vercel (with security headers: CSP, HSTS, XSS protection, X-Frame-Options)
+- **PWA:** Yes (manifest.json, apple-touch-icon, standalone mode with iOS safe area support)
+- **Theme:** Dark theme (#0a0a0a background, neutral grays, amber accent)
+
+## Navigation
+
+This is a single-page app. All sections are accessed via tab navigation at the root URL.
+
+| Section | Tab | Description |
+|---------|-----|-------------|
+| Dashboard | LayoutDashboard | Stats overview, maintenance alerts, ASAP acquisitions |
+| Inventory | Package | Full gear catalog across all owners |
+| Consumables | Zap | Expendable supplies with purchase links |
+| Acquisitions | ShoppingCart | New gear needs with approval workflow |
+| FLY Pack | Plane | Crew baggage assignments for fly dates |
+
+---
+
+## Dashboard
+
+### Overview Stats
+- **Total Items**: Count of all inventory items across FILMORE, Joel, Reid, and Drew
+- **Needs Maintenance**: Items flagged with Maintenance status
+- **Consumables Needed**: Items with Needed or Need Soon status
+- **Pending Acquisitions**: Items awaiting management/artist approval
+- **ASAP Items**: Acquisitions flagged as Acquire ASAP
+
+### Quick Actions
+- Clicking maintenance alerts navigates to filtered Inventory view
+- Clicking ASAP items opens acquisition detail modal
+- Search bar auto-navigates to Inventory section when focused
+
+---
+
+## Inventory Management
+
+### Item Properties
+- **ID**: Unique identifier (e.g., 001, 202, 300)
+- **Name**: Gear item name
+- **Status**: Good, Maintenance, Damaged, Unknown
+- **Show Type**: DRIVE (truck/trailer), FLY (airline), FLY/DRIVE (both), Storage
+- **Pack Location**: Where the item lives (Hardware, Camo Bag, M32 Peli, Floating, etc.)
+- **Owner**: FILMORE (band-owned), Joel, Reid, Drew (personal gear)
+- **Stock**: Quantity count
+- **Price**: Value if known
+- **Notes**: Free-text notes
+
+### Filtering & Sorting
+- Filter by status (All, Good, Maintenance, Damaged, Unknown)
+- Filter by owner (All, FILMORE, Joel, Reid, Drew)
+- Search across name, ID, notes, and pack location
+- Click any column header to sort ascending/descending
+
+### Color-Coded Badges
+- **Show Types**: DRIVE (blue), FLY (sky), FLY/DRIVE (violet), Storage (gray)
+- **Pack Locations**: Each location has a unique color for quick visual identification
+- **Statuses**: Good (emerald), Maintenance (amber), Damaged (red), Unknown (gray)
+- **Owners**: FILMORE (amber), Joel (blue), Reid (emerald), Drew (purple)
+
+### Owner Gear Breakdown
+- **FILMORE**: Band-owned gear (Hardware Case, Camo Bag, Wireless Mic Peli, etc.)
+- **Joel**: Drums, monitors, playback, lighting (M32 Peli, IEM Peli, Drum Cases, etc.)
+- **Reid**: Electric guitars, pedalboard, amp (EGT 01, EGT 02, Pedalboard)
+- **Drew**: FOH equipment, monitors iPad, cable tester, printer, backup IEMs
+
+---
+
+## Consumables
+
+### Categories
+- **Tape**: Black gaff, electrical, spike tape, clear masking
+- **Batteries**: Duracell Procell AA (24-pack), 9V (12-pack)
+- **Audio**: 25ft FOH XLRs, cables
+- **Band**: Guitar strings, spare supplies
+
+### Status Types
+- **Full Stock**: Fully stocked, no action needed
+- **Needed**: Must purchase before next run
+- **Need Soon**: Running low, plan to reorder
+- **Additional**: Nice to have, not urgent
+
+### Features
+- Direct purchase links (Amazon, Sweetwater) for each item
+- Quantity needed tracking
+- Price per unit/pack
+
+---
+
+## Acquisitions
+
+### Approval Workflow
+1. **Production Manager** adds items with details (rent/own, pricing, notes, product links)
+2. **Management** reviews and approves or denies
+3. **Artist** can also review and approve/deny
+4. Role switching via dropdown in the Acquisitions tab
+
+### Item Properties
+- **Rent/Own**: Rental, Own, or Rental+Own classification
+- **Status**: Acquire ASAP, Needed, In the works, Additional, Un-Necessary, Acquired
+- **Buy Price / Rental Cost**: Pricing information
+- **Category**: Audio, Band, Tour, Lighting
+- **Approval**: Pending, Approved, Denied
+- **Product Links**: Direct links to products (supports multiple comma-separated links)
+- **Notes**: Context and justification
+
+### Multi-Link Support
+Items can have multiple product links displayed as numbered links (#1, #2, #3, etc.). Links are comma-separated in the data.
+
+### Key Acquisition Categories
+- **Audio**: FOH snakes, Apollo interface, PSE unit, RTA mic, power conditioners, screen mounts
+- **Band**: Wireless mics, guitar tech workstation, wired earpack, pick holders, capos
+- **Tour**: Radios, trailer straps, load bars, drum covers, laminates
+- **Lighting**: Power extensions for upstage lighting
+
+---
+
+## FLY Pack
+
+### Crew Members
+- **Joel**: Drums, monitors, playback, lighting tech
+- **Drew**: FOH engineer, monitors
+- **Reid**: Guitar tech
+- **Tyler**: Drums, acoustic guitar
+- **Guest**: Overflow/guest assignments
+
+### Features
+- **Person Cards**: Visual grid showing each person's checked bags and carry-ons
+- **Search Highlighting**: Search matches highlight the person card with a colored ring and pin icon, matching items highlighted in amber
+- **Editable Assignments**: Dropdown selects for checked bag and carry-on per item
+- **Sortable Table**: Full list view with sortable columns
+
+### Typical FLY Pack Items
+- M32 Peli (Joel - checked)
+- IEM Peli (Joel - checked)
+- Playback Peli (Joel - carry-on)
+- Cables Peli (Drew - checked)
+- EGT Pedalboard (Reid - checked)
+- Snare Case (Tyler - checked)
+- Cymbals Case (Reid - checked)
+- EGT 01 (Reid - carry-on)
+- FILMORE Acoustic GTR (Tyler - carry-on)
+- Green Peli (Drew - carry-on)
+
+---
+
+## Architecture
+
+- **Single HTML file**: All React components, data, and styles in one `index.html`
+- **No build step**: Uses CDN-loaded React, Babel (in-browser transpilation), and Tailwind CSS
+- **Data persistence**: Browser localStorage (device-specific, not synced across users)
+- **Initial data**: Hardcoded in `INITIAL_DATA` object, merged with localStorage on load
+- **Defensive data loading**: Merges saved data with initial data to handle missing/corrupted arrays
+- **PWA**: manifest.json for home screen installation, standalone display mode
+- **Performance**: DNS prefetch, preconnect, preloaded critical resources, pinned library versions for caching
+- **Loading screen**: Branded FILMORE loading state shown while scripts download
+
+---
+
+## Access & Authentication
+
+| Access | Method | Description |
+|--------|--------|-------------|
+| Site Entry | Access code | Required to view any content |
+| PM View | Default | Full edit access to all sections |
+| Management View | Role switch | Approve/deny acquisitions |
+| Artist View | Role switch | Approve/deny acquisitions |
+
+Access code required. Contact admin for credentials.
+
+---
+
+## Security
+
+- Content Security Policy (CSP) restricting scripts, styles, fonts, images
+- HTTP Strict Transport Security (HSTS) with preload
+- X-Frame-Options: DENY (prevents iframe embedding)
+- X-Content-Type-Options: nosniff
+- XSS Protection enabled
+- Referrer-Policy: strict-origin-when-cross-origin
+- Permissions-Policy restricting device APIs
+
+---
+
+## Contact
+
+FiL Hash is available for freelance work and collaboration on audio tools, creative tech, and touring production solutions.
+
+- **Email:** filhashmore@protonmail.com
+- **GitHub:** https://github.com/filhashmore/filmore-gear
+- **X/Twitter:** https://x.com/FiLHashDev
+- **Location:** Nashville, TN

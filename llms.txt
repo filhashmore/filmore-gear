@@ -1,0 +1,46 @@
+# FILMORE Gear Inventory
+
+> A touring production management web app for tracking, managing, and updating gear inventory across crew members, with approval workflows and fly pack logistics.
+
+## Site Info
+
+- URL: https://filmore-gear.vercel.app
+- Author: FiL Hash
+- Contact: filhashmore@protonmail.com
+- GitHub: https://github.com/filhashmore/filmore-gear
+- X/Twitter: https://x.com/FiLHashDev
+- Stack: React 18 (CDN), Tailwind CSS, Lucide Icons, Babel, localStorage
+- Type: Single-page PWA with access code protection
+
+## Pages
+
+This is a single-page app with tab-based navigation. All sections are at the root URL.
+
+- [Dashboard](https://filmore-gear.vercel.app): Overview stats — total items, maintenance alerts, ASAP acquisitions, consumable needs
+- [Inventory](https://filmore-gear.vercel.app): Full gear catalog across all owners (FILMORE, Joel, Reid, Drew) with status, show type, and pack location tracking
+- [Consumables](https://filmore-gear.vercel.app): Expendable supplies (tape, batteries, cables) with stock status and purchase links
+- [Acquisitions](https://filmore-gear.vercel.app): New gear needs with rent/own classification, pricing, approval workflow, and product links
+- [FLY Pack](https://filmore-gear.vercel.app): Baggage assignment per crew member for fly dates — checked bags and carry-ons
+
+## About
+
+FILMORE Gear Inventory is built for touring production managers and backline techs working with the band FILMORE. It replaces spreadsheet-based gear tracking with a mobile-friendly, dark-themed interface optimized for backstage and venue use. The app supports DRIVE shows (full trailer), FLY shows (airline baggage limits), and Storage classification. It includes role-based approval workflows where PMs submit acquisition requests for management/artist approval.
+
+## Key Features
+
+- **Inventory Tracking**: Status (Good, Maintenance, Damaged, Unknown), show type (DRIVE, FLY, Storage), pack location, per-owner views
+- **Acquisitions Workflow**: PM submits → Management/Artist approves or denies, with rent vs own, pricing, and product links
+- **FLY Pack Management**: Visual crew-member cards showing checked bags and carry-ons, with search highlighting
+- **Consumables Tracking**: Stock levels, reorder status, direct purchase links
+- **Sortable Columns**: Click column headers to sort ascending/descending
+- **Color-Coded Badges**: Show types, pack locations, statuses, and categories all color-coded
+- **PWA Support**: Add to home screen on mobile for app-clip experience with iOS safe area support
+- **Reduced Motion**: Respects prefers-reduced-motion for accessibility
+
+## Access
+
+Access code required. Contact admin for credentials.
+
+## Contact
+
+FiL Hash is available for freelance work and collaboration on touring production tools and creative tech. Email filhashmore@protonmail.com, follow on X at https://x.com/FiLHashDev, or visit GitHub at https://github.com/filhashmore.

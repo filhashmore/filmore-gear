@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://filmore-gear.vercel.app/sitemap.xml
+
+# AI / LLM Context
+# Structured site context for AI agents and language models
+AI-Context: /llms.txt
+AI-Context-Full: /llms-full.txt

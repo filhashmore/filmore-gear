@@ -1,9 +1,15 @@
+<!-- AI/LLM Context: This site provides structured context for AI agents at /llms.txt (summary) and /llms-full.txt (comprehensive). Markdown page mirror available at /index.html.md -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>FILMORE Gear Inventory</title>
+
+  <!-- AI / LLM Context -->
+  <link rel="ai-context" href="/llms.txt" type="text/markdown" title="AI context summary" />
+  <link rel="ai-context-full" href="/llms-full.txt" type="text/markdown" title="AI context comprehensive" />
+  <meta name="ai-context" content="/llms.txt" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="f-only-white.png">
@@ -38,6 +44,11 @@
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"FILMORE Gear Inventory","url":"https://filmore-gear.vercel.app","description":"Tour production management system for tracking gear, consumables, acquisitions, and fly pack logistics.","author":{"@type":"Person","name":"FiL Hash","sameAs":["https://x.com/FiLHashDev","https://github.com/filhashmore"]}}
+  </script>
 
   <!-- DNS Prefetch & Preconnect for faster resource loading -->
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
