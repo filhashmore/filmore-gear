@@ -135,7 +135,7 @@
 
     // ============ DATA VERSION ============
     // Increment this when INITIAL_DATA changes to trigger smart merge for all users
-    const DATA_VERSION = '2026-02-18-2';
+    const DATA_VERSION = '2026-02-18-3';
 
     // Fields that users can edit (preserved during merge), everything else syncs from source
     const USER_EDITABLE_FIELDS = {
@@ -189,6 +189,7 @@
         { id: '009', name: 'Tyler - In-Ear Monitors', status: 'Unknown', price: '', stock: 1, showType: 'FLY, DRIVE', packLocation: 'Tyler Backpack', make: '', notes: '', category: 'inventory' },
         { id: '010', name: 'FILMORE Acoustic GTR', status: 'Maintenance', price: '', stock: 1, showType: 'FLY, DRIVE', packLocation: 'Floating', make: '', notes: 'AC GTR Case handle broken', category: 'inventory' },
         { id: '011', name: 'IFAK - Med Kit', status: 'Good', price: '', stock: 1, showType: 'DRIVE, FLY', packLocation: 'Floating', make: '', notes: 'Green Peli for Fly', category: 'inventory' },
+        { id: '222', name: 'SPD-SX Pad', status: 'Maintenance', price: '', stock: 1, showType: 'FLY', packLocation: 'Floating', make: '', notes: '', category: 'inventory' },
       ],
       consumables: [
         { id: '500', name: 'Black Gaff Tape', status: 'Needed', price: '$20.00', needed: 2, category: 'Tape', make: 'https://www.sweetwater.com/store/detail/Gaff255Blk', notes: 'General Purpose - Set Lists, safety, stage fixes', sheetCategory: 'consumables' },
@@ -264,6 +265,7 @@
         { id: '995', name: 'Drew Backpack', checkedBag: '', carryOn: 'Drew', notes: 'Personal carry-on', sheetCategory: 'flyPack' },
         { id: '996', name: 'Reid Backpack', checkedBag: '', carryOn: 'Reid', notes: 'Personal carry-on', sheetCategory: 'flyPack' },
         { id: '997', name: 'Tyler Backpack', checkedBag: '', carryOn: 'Tyler', notes: 'Personal carry-on', sheetCategory: 'flyPack' },
+        { id: '222', name: 'SPD-SX Pad', checkedBag: 'Joel', carryOn: '', notes: '', sheetCategory: 'flyPack' },
       ],
       joelGear: [
         { id: '201', name: 'Drum Hardware Case', status: 'Good', price: '', stock: 1, showType: 'DRIVE', packLocation: 'Floating', make: '', notes: '', owner: 'Joel', sheetCategory: 'joelGear' },
@@ -287,6 +289,7 @@
         { id: '219', name: 'Joel - In-Ear Monitors', status: 'Unknown', price: '', stock: 1, showType: 'FLY, DRIVE', packLocation: 'Joel Backpack', make: '', notes: '', owner: 'Joel', sheetCategory: 'joelGear' },
         { id: '220', name: 'Trax/Lighting Computer', status: 'Maintenance', price: '', stock: 1, showType: 'FLY, DRIVE', packLocation: 'Floating', make: '', notes: '', owner: 'Joel', sheetCategory: 'joelGear' },
         { id: '221', name: 'Cables Peli', status: 'Good', price: '', stock: 1, showType: 'FLY, DRIVE', packLocation: 'Cables Peli', make: '', notes: '', owner: 'Joel', sheetCategory: 'joelGear' },
+        { id: '222', name: 'SPD-SX Pad', status: 'Maintenance', price: '', stock: 1, showType: 'FLY', packLocation: 'Floating', make: '', notes: '', owner: 'Joel', sheetCategory: 'joelGear' },
       ],
       reidGear: [
         { id: '300', name: 'EGT 01', status: 'Maintenance', price: '', stock: 1, showType: 'FLY, DRIVE', packLocation: 'Floating', make: '', notes: '', owner: 'Reid', sheetCategory: 'reidGear' },
@@ -834,6 +837,7 @@
                       <option value="Reid">Reid</option>
                       <option value="Tyler">Tyler</option>
                       <option value="Guest">Guest</option>
+                      <option value="Guest 2">Guest 2</option>
                     </select>
                   </div>
                   <div>
@@ -845,6 +849,7 @@
                       <option value="Reid">Reid</option>
                       <option value="Tyler">Tyler</option>
                       <option value="Guest">Guest</option>
+                      <option value="Guest 2">Guest 2</option>
                     </select>
                   </div>
                 </div>
@@ -1649,13 +1654,14 @@
       };
 
       const renderFlyPack = () => {
-        const people = ['Joel', 'Drew', 'Reid', 'Tyler', 'Guest'];
+        const people = ['Joel', 'Drew', 'Reid', 'Tyler', 'Guest', 'Guest 2'];
         const colorStyles = {
           Joel: { bg: 'bg-blue-500/20', border: 'border-blue-500/30', text: 'text-blue-400', highlight: 'ring-2 ring-blue-400' },
           Drew: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', text: 'text-emerald-400', highlight: 'ring-2 ring-emerald-400' },
           Reid: { bg: 'bg-amber-500/20', border: 'border-amber-500/30', text: 'text-amber-400', highlight: 'ring-2 ring-amber-400' },
           Tyler: { bg: 'bg-red-500/20', border: 'border-red-500/30', text: 'text-red-400', highlight: 'ring-2 ring-red-400' },
           Guest: { bg: 'bg-purple-500/20', border: 'border-purple-500/30', text: 'text-purple-400', highlight: 'ring-2 ring-purple-400' },
+          'Guest 2': { bg: 'bg-pink-500/20', border: 'border-pink-500/30', text: 'text-pink-400', highlight: 'ring-2 ring-pink-400' },
         };
 
         // Find people with matching items based on search
@@ -1683,7 +1689,7 @@
         return (
         <div className="space-y-6">
           {/* Person Cards - Mobile responsive grid */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
             {people.map(person => {
               const checkedItems = (data.flyPack || []).filter(i => i.checkedBag === person);
               const carryOnItems = (data.flyPack || []).filter(i => i.carryOn === person);
