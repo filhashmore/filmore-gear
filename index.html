@@ -135,14 +135,14 @@
 
     // ============ DATA VERSION ============
     // Increment this when INITIAL_DATA changes to trigger smart merge for all users
-    const DATA_VERSION = '2026-02-01-2';
+    const DATA_VERSION = '2026-02-18-1';
 
     // Fields that users can edit (preserved during merge), everything else syncs from source
     const USER_EDITABLE_FIELDS = {
       inventory: ['status', 'stock', 'packLocation'],
       consumables: ['status', 'needed'],
       acquisitions: ['approval'],
-      flyPack: ['bags'],
+      flyPack: ['checkedBag', 'carryOn'],
       joelGear: ['status', 'stock', 'packLocation'],
       reidGear: ['status', 'stock', 'packLocation'],
       drewGear: ['status', 'stock', 'packLocation'],
@@ -256,6 +256,10 @@
         { id: '300', name: 'EGT 01', checkedBag: '', carryOn: 'Reid', notes: '', sheetCategory: 'flyPack' },
         { id: '010', name: 'FILMORE Acoustic GTR', checkedBag: '', carryOn: 'Tyler', notes: '', sheetCategory: 'flyPack' },
         { id: '403', name: 'Green Peli', checkedBag: '', carryOn: 'Drew', notes: '', sheetCategory: 'flyPack' },
+        { id: '990', name: 'Joel Suitcase', checkedBag: 'Joel', carryOn: '', notes: 'Checked clothing bag', sheetCategory: 'flyPack' },
+        { id: '991', name: 'Drew Suitcase', checkedBag: 'Drew', carryOn: '', notes: 'Checked clothing bag', sheetCategory: 'flyPack' },
+        { id: '992', name: 'Reid Suitcase', checkedBag: 'Reid', carryOn: '', notes: 'Checked clothing bag', sheetCategory: 'flyPack' },
+        { id: '993', name: 'Tyler Suitcase', checkedBag: 'Tyler', carryOn: '', notes: 'Checked clothing bag', sheetCategory: 'flyPack' },
       ],
       joelGear: [
         { id: '201', name: 'Drum Hardware Case', status: 'Good', price: '', stock: 1, showType: 'DRIVE', packLocation: 'Floating', make: '', notes: '', owner: 'Joel', sheetCategory: 'joelGear' },
@@ -803,6 +807,45 @@
                 </div>
               </>
             );
+          case 'flyPack':
+            return (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">ID</label>
+                    <input type="text" value={formData.id || ''} onChange={e => handleChange('id', e.target.value)} placeholder="Auto-generated if blank" className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500" />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">Item Name</label>
+                    <input type="text" value={formData.name || ''} onChange={e => handleChange('name', e.target.value)} className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500" required />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">Checked Bag</label>
+                    <select value={formData.checkedBag || ''} onChange={e => handleChange('checkedBag', e.target.value)} className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500">
+                      <option value="">None</option>
+                      <option value="Joel">Joel</option>
+                      <option value="Drew">Drew</option>
+                      <option value="Reid">Reid</option>
+                      <option value="Tyler">Tyler</option>
+                      <option value="Guest">Guest</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1">Carry-On</label>
+                    <select value={formData.carryOn || ''} onChange={e => handleChange('carryOn', e.target.value)} className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500">
+                      <option value="">None</option>
+                      <option value="Joel">Joel</option>
+                      <option value="Drew">Drew</option>
+                      <option value="Reid">Reid</option>
+                      <option value="Tyler">Tyler</option>
+                      <option value="Guest">Guest</option>
+                    </select>
+                  </div>
+                </div>
+              </>
+            );
           default:
             return null;
         }
@@ -928,11 +971,13 @@
       const handleSaveItem = (item, category) => {
         setData(prev => {
           const list = [...(prev[category] || [])];
-          const existingIndex = list.findIndex(i => i.id === item.id);
+          // Auto-generate ID if not provided
+          const itemWithId = item.id ? item : { ...item, id: String(Date.now()).slice(-6) };
+          const existingIndex = list.findIndex(i => i.id === itemWithId.id);
           if (existingIndex >= 0) {
-            list[existingIndex] = { ...item, sheetCategory: category };
+            list[existingIndex] = { ...itemWithId, sheetCategory: category };
           } else {
-            list.push({ ...item, sheetCategory: category });
+            list.push({ ...itemWithId, sheetCategory: category });
           }
           return { ...prev, [category]: list };
         });
@@ -1642,7 +1687,7 @@
               const isHighlighted = matchingPeople.has(person);
 
               return (
-                <div key={person} className={`bg-dark-800 rounded-xl border overflow-hidden transition-all ${isHighlighted ? `${style.highlight} border-transparent` : 'border-dark-600'}`}>
+                <div key={person} className={`bg-dark-800 rounded-xl border transition-all ${isHighlighted ? `${style.highlight} border-transparent` : 'border-dark-600'}`}>
                   <div className={`${style.bg} ${style.border} border-b px-3 md:px-4 py-2 md:py-3`}>
                     <h3 className={`font-semibold ${style.text} text-sm md:text-base flex items-center gap-2`}>
                       {person}
